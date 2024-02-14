@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'HBIC fMRI Methods'
+copyright = '2024, James Bartolotti'
+author = 'James Bartolotti'
 
 release = '0.1'
 version = '0.1.0'
