@@ -7,5 +7,5 @@ Contents
 --------
 
 .. toctree::
-   fMRIPrep
+   fmriprep
    usage
