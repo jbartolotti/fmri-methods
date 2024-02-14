@@ -7,6 +7,7 @@ Subheading
 ------------
 
 Regular Text
+
 .. code-block:: console
 
    code goes here
