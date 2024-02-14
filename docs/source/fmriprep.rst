@@ -12,7 +12,7 @@ Build fmriprep singularity image in ``/usr/local/singularity``
 
 Create a new conda environment for bidskit and fmriprep
 
-[Obtain freesurfer license](https://surfer.nmr.mgh.harvard.edu/fswiki/License) and place in folder for mounting
+Obtain [freesurfer license](https://surfer.nmr.mgh.harvard.edu/fswiki/License) and place in folder for mounting
 
 
 
