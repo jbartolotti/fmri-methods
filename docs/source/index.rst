@@ -9,3 +9,4 @@ Contents
 .. toctree::
    fmriprep
    usage
+   brain3dprint
