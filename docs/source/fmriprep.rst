@@ -55,7 +55,7 @@ First, create a dataset folder, e.g. ``/path/myproject`` that contains a single 
                       /1002/1/[DICOM Images]
                            /2/[DICOM Images]
 
-The first-pass conversion by *bidskit* will create a translator text file that you will edit to aid in creating the BIDS-compliant structure. This step only needs to be done once per project. After activating the ``bidskit-env`` conda environment, you can run *bidskit* from the data directory (i.e., the folder that contains the ``sourcedata`` subfolder) or by specifying its location.
+The first-pass conversion by *bidskit* will create a translator text file that you will edit to aid in creating the BIDS-compliant structure. This step only needs to be done once per project. After activating the ``bidskit-env`` conda environment, you can run *bidskit* from the data directory (i.e., the folder that contains the ``sourcedata`` subfolder) or by specifying its location. If you have only one scanning session, use the --no-sessions option, ``bidskit --no-sessions`` in both the first and second bidskit calls.
 
 .. code-block:: console
 
@@ -73,6 +73,7 @@ Navigate to ``/path/myproject/code`` and open ``Protocol_Translator.json`` for e
 - https://reproducibility.stanford.edu/bids-tutorial-series-part-1a/
 - https://bids-specification.readthedocs.io/en/stable/introduction.html
 - https://bids-standard.github.io/bids-starter-kit/tutorials/annotation.html
+- https://bids-standard.github.io/bids-examples/#mri
 - https://andysbrainbook.readthedocs.io/en/latest/OpenScience/OS/BIDS_Overview.html
 - https://bids.neuroimaging.io/
 
