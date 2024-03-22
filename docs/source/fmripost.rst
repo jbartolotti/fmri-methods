@@ -27,8 +27,16 @@ XCP-D
       /usr/local/singularity/xcp_d-0.6.4.simg \
       $HOME/path/to/fmriprepdata $HOME/path/to/fmriprepdata/derivatives/xcp_d \
       participant \
-      --nthreads 8 -w /tmp/xcpd --fs-license-file /usr/local/fslicense \
+      --nthreads 8 -w /tmp/xcpd --fs-license-file /opt/fslicense/license.txt \
       --nuisance-regressors 36P  --smoothing 6 \
       --participant-label TD001 \
       --task-id rest
 
+NOTE: XCP-D only works on derivative datasets. Ensure that the following line is in your ``dataset_description.json`` file:
+
+.. code-block:: console
+
+   "DatasetType": "derivative",
+
+
+   
