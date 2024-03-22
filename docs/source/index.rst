@@ -8,5 +8,5 @@ Contents
 
 .. toctree::
    fmriprep
-   usage
+   fmripost
    brain3dprint
