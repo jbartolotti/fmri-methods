@@ -26,6 +26,7 @@ XCP-D
    singularity run --cleanenv --bind /usr/local/fslicense:/opt/fslicense,$HOME/tmp:/tmp \
       /usr/local/singularity/xcp_d-0.6.4.simg \
       $HOME/path/to/fmriprepdata $HOME/path/to/fmriprepdata/derivatives/xcp_d \
+      participant \
       --nthreads 8 -w /tmp/xcpd --fs-license-file /usr/local/fslicense \
       --nuisance-regressors 36P  --smoothing 6 \
       --participant-label TD001 \
