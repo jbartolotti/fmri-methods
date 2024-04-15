@@ -46,16 +46,18 @@ BIDS Format
 
 `BIDSKIT <https://github.com/jmtyszka/bidskit/tree/master>`_ is one of several utilities available for converting DICOM images to BIDS neuroimaging formats.
 
-First, create a dataset folder, e.g. ``/path/myproject`` that contains a single ``sourcedata`` folder. Within ``sourcedata``, create a folder for each participant. In the participant folder, create a folder for each session that contains the DICOM images. 
+First, create a dataset folder, e.g. ``/path/myproject`` that contains a single ``sourcedata`` folder. Within ``sourcedata``, create a folder for each participant. Within the participant folder, create a folder for each session (i.e., timepoint T1/T2/T3, or modality MRI/EEG). Within the session folder, create a folder for each scanning run that contains the DICOM images. If you do not want to organize by session, use the `--no-sessions` flag at the end of your command (i.e., `bidskit --no-sessions` ) in both the first and second bidskit calls.
+
 
 .. code-block:: console
 
-  myproject/sourcedata/1001/1/[DICOM Images]
-                           /2/[DICOM Images]
-                      /1002/1/[DICOM Images]
-                           /2/[DICOM Images]
+  myproject/sourcedata/1001/T1/1/[DICOM Images]
+                              /2/[DICOM Images]
+                           /T2/1/[DICOM Images] 
+                      /1002/T1/1/[DICOM Images]
+                              /2/[DICOM Images]
 
-The first-pass conversion by *bidskit* will create a translator text file that you will edit to aid in creating the BIDS-compliant structure. This step only needs to be done once per project. After activating the ``bidskit-env`` conda environment, you can run *bidskit* from the data directory (i.e., the folder that contains the ``sourcedata`` subfolder) or by specifying its location. If you have only one scanning session, use the --no-sessions option, ``bidskit --no-sessions`` in both the first and second bidskit calls.
+The first-pass conversion by *bidskit* will create a translator text file that you will edit to aid in creating the BIDS-compliant structure. This step only needs to be done once per project. After activating the ``bidskit-env`` conda environment, you can run *bidskit* from the data directory (i.e., the folder that contains the ``sourcedata`` subfolder) or by specifying its location. 
 
 .. code-block:: console
 
