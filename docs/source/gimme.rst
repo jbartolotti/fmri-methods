@@ -1,7 +1,6 @@
 GIMME, Group Iterative Multiple Model Estimation 
 =============
 
-*gimmefMRI* provides an interface for running GIMME models with the *gimme* R package (Group Iterative Multiple Model Estimation) on fMRI timecourse data for functional connectivity analyses. 
 
 GIMME is a model-building approach from within a unified structural equation modeling (uSEM) framework. uSEMs are a type of model that identify lagged and contemporaneous relations between nodes. Failing to account for lagged relations in fMRI can lead to spurious contemporaneous connections (Gates et al., 2010, c.f. Beltz & Gates 2017 and c.f. Gates & Molenaar 2012)
 
@@ -58,13 +57,13 @@ Individual connections are added iteratively until "excellent fit" is achieved. 
 Data Recommendations
 ------------
 
-**Recommended timecourse length**: 200 timepoints yields accurate recovery of both path presence and direction in simulated data; 50 timepoints is sufficient for path presence (92-100% recovery), but poor direction recovery (Gates & Molenaar, 2012).
+**Recommended timecourse length:** 200 timepoints yields accurate recovery of both path presence and direction in simulated data; 50 timepoints is sufficient for path presence (92-100% recovery), but poor direction recovery (Gates & Molenaar, 2012).
 
-**Recommended sample size**: Minimum 10 per subgroup (Gates & Molenaar, 2012)
+**Recommended sample size:** Minimum 10 per subgroup (Gates & Molenaar, 2012)
 
-**Recommended nodes**: 5-15 recommended, up to 3-20 (Beltz & Gates 2017; Lane & Gates 2017). > 20 possible, but increases computation time.
+**Recommended nodes:** 5-15 recommended, up to 3-20 (Beltz & Gates 2017; Lane & Gates 2017). More than 20 is possible but increases computation time.
 
-**Recommended group-connection threshold**: 75% (majority threshold for neuroimaging research; van den Heuvel & Sporns 2011, c.f. Lane & Gates 2017)
+**Recommended group-connection threshold:** 75% (majority threshold for neuroimaging research; van den Heuvel & Sporns 2011, c.f. Lane & Gates 2017)
 
 Timecourses **can** be different lengths between participants.
 
@@ -92,11 +91,13 @@ Further Resources
 
 gimme R package: https://cran.r-project.org/web/packages/gimme/index.html
 
-gimme developer website: https://gimme.web.unc.edu/
+gimme developer website: https://tarheels.live/gimme/
 
 
 External Tutorials
 ~~~~~~~~~~~~~~~~
+
+https://tarheels.live/gimme/tutorials/
 
 Beltz, A. M., & Gates, K. M. (2017). Network mapping with GIMME. Multivariate behavioral research, 52(6), 789-804. [10.1080/00273171.2017.1373014](https://www.doi.org/10.1080/00273171.2017.1373014)
 
@@ -122,8 +123,14 @@ Hillary, F. G., Medaglia, J. D., Gates, K. M., Molenaar, P. C., & Good, D. C. (2
 
 .. _gimmestart:
 
-gimmefMRI Usage
+gimmefMRI
 ==============
+
+``gimmefMRI`` provides an interface for running GIMME models with the ``gimme`` R package (Group Iterative Multiple Model Estimation) on fMRI timecourse data for functional connectivity analyses. 
+
+.. _gimmesetup
+Setup
+--------------
 
 Install the `gimmefMRI <https://github.com/jbartolotti/gimmefMRI>`_ package in R using the following two commands:
 
@@ -147,7 +154,7 @@ This package comes with built-in dummy data to test your installation. Use the f
 
     gimmefMRI(mode = 'demo')
 
-This will create subfolders ``models`` and ``scripts`` in your current directory. ``scripts`` contains the file ``run_models.R`` which contains the R-code necessary used to run the two pre-configured gimme models. ``models`` contains two subfolders, ``first_model`` and ``second_model``, each of which contains the input data, model output, and sample figures.
+This will create subfolders ``models`` and ``scripts`` in your current directory. ``scripts`` contains the file ``run_models.R`` which contains the R-code necessary to run the two pre-configured gimme models. ``models`` contains two subfolders, ``first_model`` and ``second_model``, each of which contains the input data, model output, and sample figures.
 
 .. _gimmeusage:
 
@@ -160,20 +167,22 @@ The function ``getTC()`` will generate a ``timecourses.csv`` file suitable for u
 
 The output ``timecourses.csv`` file contains columns for each ROI, plus data columns including subject, time, group, condition, run, and censoring.
 
-Note: AFNI functions must be installed and on the path before opening R in order to run. Alternatively, ``getTC()`` generates an ``extract_timecourses.sh`` file that can be run from the command line. This will create individual files for each combination of subject and ROI. In a later update, ``getTC()`` will allow you to generate the ``timecourses.csv`` file from these single-roi timecourse files directly.
+**NOTE:** AFNI functions must be installed and on the path before opening R in order to run. On the Synapse research server, use ``load afni`` to add it to the path. Alternatively, ``getTC()`` generates an ``extract_timecourses.sh`` file that can be run from the command line. This will create individual files for each combination of subject and ROI. In a later update, ``getTC()`` will allow you to generate the ``timecourses.csv`` file from these single-roi timecourse files directly.
 
-Run the function ``gimmefMRI_templates(writedir = TARGET_DIRECTORY)`` to generate sample configuration files ``DemoGIMME.xlsx`` and ``get_timecourses.csv`` in the specified target directory. Default is to save the sample files to the current directory. 
+To generate sample configuration files ``DemoGIMME.xlsx`` and ``get_timecourses.csv`` in the specified target directory, run the following. If ``writedir`` is not specified, the default is to save the sample files in the current directory. 
+
+.. code-block:: console
+
+    gimmefMRI_templates(writedir = TARGET_DIRECTORY)
 
 .. _gimmeconfig:
 
 Configuring GIMME.xlsx
 ~~~~~~~~~~~~~~
 
-GIMME.xlsx
-
 All data to be analyzed is located in the TIMECOURSES sheet. This contains a single column for each ROI or other predictor (e.g., task) of interest. Models may use all or a subset of these predictors. Additional columns specify Subject, Subgroup, Run, Condition, Slice Number, and Time. The Censor column can be used to exclude single rows from the model (1 = exclude). 
 
-The CONTROL sheet specifies where data is stored and results should be saved, and which parts of the analysis to run.
+The CONTROL sheet specifies where data is stored, where results should be saved, and which parts of the analysis to run.
 
 The MODELS sheet contains any number of columns, each one specifying a single GIMME model to run.
 
@@ -202,8 +211,8 @@ Runtime Options
       models = c('model1','model2')
       )
 
-The first argument is the path to the `GIMME.xlsx` configuration file. Default is `load` to prompt the user for the file location interactively. `demo` runs using a built-in 
+The first argument is the path to the ``GIMME.xlsx`` configuration file. Default is `load` to prompt the user for the file location interactively. `demo` runs using a built-in dataset.
 
-Use the `run` option to specify steps to run or skip. Overrides values in the CONTROL sheet.
+Use the ``run`` option to specify steps to run or skip. If empty, values from the CONTROL sheet in GIMME.xlsx will be used. Run options specified in the command override values in the CONTROL sheet.
 
 Use the `models` option to specify models to run for each step. Default: run all models listed in the MODELS sheet.
