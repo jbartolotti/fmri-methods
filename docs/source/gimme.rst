@@ -180,6 +180,8 @@ To generate sample configuration files ``DemoGIMME.xlsx`` and ``get_timecourses.
 Configuring GIMME.xlsx
 ~~~~~~~~~~~~~~
 
+download `DemoGIMME.xlsx <https://github.com/jbartolotti/gimmefMRI/blob/main/inst/extdata/DemoGIMME.xlsx>`_
+
 All data to be analyzed is located in the TIMECOURSES sheet. This contains a single column for each ROI or other predictor (e.g., task) of interest. Models may use all or a subset of these predictors. Additional columns specify Subject, Subgroup, Run, Condition, Slice Number, and Time. The Censor column can be used to exclude single rows from the model (1 = exclude). 
 
 The CONTROL sheet specifies where data is stored, where results should be saved, and which parts of the analysis to run.
