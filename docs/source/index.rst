@@ -9,6 +9,6 @@ Contents
 .. toctree::
    fmriprep
    fmripost
-   timecourses
    gimme
+   gimmefmri
    brain3dprint
