@@ -1,4 +1,4 @@
-GIMME introduction
+GIMME, Group Iterative Multiple Model Estimation 
 =============
 
 *gimmefMRI* provides an interface for running GIMME models with the *gimme* R package (Group Iterative Multiple Model Estimation) on fMRI timecourse data for functional connectivity analyses. 
@@ -19,6 +19,7 @@ Model Fitting Method
 3. Identify individual-level connections for each individual
 
 Group Connections
+~~~~~~~~~~~~~~~
 
 Starting from null models for each individual, gimme identifies the connection that significantly improves model fit for the greatest number of individuals (Bonferroni-corrected alpha). If there is a tie, then the connection that has the highest average improvement to model fit is selected. If the selected connection significantly improves model fit for >= 75% of individuals (user-defined % threshold), then that connection is added to *every* individual model.
 
@@ -27,6 +28,7 @@ Using the new base model, gimme searches for the next connection that significan
 After identifying a group-level model, group connections are pruned. If any connection is now significant in < 75% of individuals, it is removed (if multiple group connections meet this criteria, the connection with the lowest z value is selected). Pruning continues from the new model until no group connections are identified for pruning.
 
 Subgroup Connections
+~~~~~~~~~~~~~
 
 If subgroup membership is defined *a priori*, then subgroup connections are identified within each subgroup separately, using the same procedure as group connection identification. The subgroup threshold is allowed to differ from the group threshold. 
 
@@ -35,6 +37,7 @@ After subgroup connections are identified in all subgroups, group connections ar
 If subgroup membership is not defined *a priori*, subgroups are identified using the community detection method Walktrap (Pons & Latapy 2006, c.f. Lane & Gates 2017), and then subgroup connections are identified as above.
 
 Individual Connections
+~~~~~~~~~~~~~~~~~
 
 Using the group and subgroup paths as a starting model, individual models are estimated. For each individual, the connection that most increases model fit is identified. Any previously-identified non-significant individual connections are pruned (group and subgroup connections cannot be pruned at this step). 
 
@@ -67,7 +70,7 @@ Missing columns (i.e., ROIs) in a single dataset will cause an error. If one ind
 
 .. _interpretation:
 
-Interpretation Recommendations
+Interpretation of GIMME Results
 ---------------
 
 For Group connections, a beta weight value exists for each individual. Thus, individual beta weights can be compared between groups or associated with other individual difference measures. Non-group / non-subgroup connections cannot be treated this way; unestimated individual connections cannot be replaced with zero. Specify Group connections *a priori* if you wish to analyze individual beta weights. Specifying a connection *a priori* forces its addition to the base model.
@@ -87,12 +90,14 @@ gimme developer website: https://gimme.web.unc.edu/
 
 
 External Tutorials
+~~~~~~~~~~~~~~~~
 
 Beltz, A. M., & Gates, K. M. (2017). Network mapping with GIMME. Multivariate behavioral research, 52(6), 789-804. [10.1080/00273171.2017.1373014](https://www.doi.org/10.1080/00273171.2017.1373014)
 
 Lane, S. T., & Gates, K. M. (2017). Automated selection of robust individual-level structural equation models for time series data. Structural Equation Modeling: A Multidisciplinary Journal, 24(5), 768-782. [10.1080/10705511.2017.1309978](https://www.doi.org/10.1080/10705511.2017.1309978)
 
 Algorithm Development
+~~~~~~~~~~~~~~~~~
 
 Gates, K. M., Fisher, Z. F., & Bollen, K. A. (2019). Latent variable GIMME using model implied instrumental variables (MIIVs). Psychological methods. [10.1037/met0000229](https://www.doi.org/10.1037/met0000229)
 
@@ -103,6 +108,7 @@ Gates, K. M., Lane, S. T., Varangis, E., Giovanello, K., & Guiskewicz, K. (2017)
 Gates, K. M., & Molenaar, P. C. (2012). Group search algorithm recovers effective connectivity maps for individuals in homogeneous and heterogeneous samples. NeuroImage, 63(1), 310-319. [10.1016/j.neuroimage.2012.06.026](https://www.doi.org/10.1016/j.neuroimage.2012.06.026)
 
 Applications
+~~~~~~~~~~~~~~~
 
 Gates, K. M., Molenaar, P. C., Hillary, F. G., & Slobounov, S. (2011). Extended unified SEM approach for modeling event-related fMRI data. NeuroImage, 54(2), 1151-1158. [10.1016/j.neuroimage.2010.08.051](https://www.doi.org/10.1016/j.neuroimage.2010.08.051)
 
@@ -152,10 +158,12 @@ Note: AFNI functions must be installed and on the path before opening R in order
 
 Run the function ``gimmefMRI_templates(writedir = TARGET_DIRECTORY)`` to generate sample configuration files ``DemoGIMME.xlsx`` and ``get_timecourses.csv`` in the specified target directory. Default is to save the sample files to the current directory. 
 
+.. _gimmeconfig:
 
-# Configuration
+Configuring GIMME.xlsx
+~~~~~~~~~~~~~~
 
-## GIMME.xlsx
+GIMME.xlsx
 
 All data to be analyzed is located in the TIMECOURSES sheet. This contains a single column for each ROI or other predictor (e.g., task) of interest. Models may use all or a subset of these predictors. Additional columns specify Subject, Subgroup, Run, Condition, Slice Number, and Time. The Censor column can be used to exclude single rows from the model (1 = exclude). 
 
@@ -169,14 +177,24 @@ The ABBREVIATIONS sheet provides a mapping between long names and shortnames for
 
 The FIGURES sheet contains any number of columns, each one specifying a single network figure to create for a specified model.
 
-## get_timecourses.csv
+.. _gettcconfig:
+
+Configuring get_timecourses.csv
+~~~~~~~~~~~~~
+
 *Under Construction*
 
-## Runtime options
-gimmefMRI('load', 
-  run = c(generate_models = TRUE, run_models = TRUE, generate_figures = TRUE, run_figures = TRUE),
-  models = c('model1','model2')
-  )
+.. _gimmerun:
+
+Runtime Options
+~~~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    gimmefMRI('load', 
+      run = c(generate_models = TRUE, run_models = TRUE, generate_figures = TRUE, run_figures = TRUE),
+      models = c('model1','model2')
+      )
 
 The first argument is the path to the `GIMME.xlsx` configuration file. Default is `load` to prompt the user for the file location interactively. `demo` runs using a built-in 
 
