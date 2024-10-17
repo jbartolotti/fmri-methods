@@ -15,8 +15,10 @@ Model Fitting Method
 -----------
 
 1. Identify all Group-level connections
+
 2. Identify all Subgroup-level connections (if applicable)
-3. Identify individual-level connections for each individual
+
+3. Identify Individual-level connections for each individual
 
 Group Connections
 ~~~~~~~~~~~~~~~
@@ -42,9 +44,13 @@ Individual Connections
 Using the group and subgroup paths as a starting model, individual models are estimated. For each individual, the connection that most increases model fit is identified. Any previously-identified non-significant individual connections are pruned (group and subgroup connections cannot be pruned at this step). 
 
 Individual connections are added iteratively until "excellent fit" is achieved. Excellent fit is achieved when two of the four model fit indexes are true:
+
 1. Root mean square of approximation (RMSEA) < .05
+
 2. Non-normed fit index (NNFI) > .95
+
 3. Comparitive fit index (CFI) > .95
+
 4. Standardize root mean square residual (SRMR) < .05
 
 .. _data:
@@ -52,15 +58,15 @@ Individual connections are added iteratively until "excellent fit" is achieved. 
 Data Recommendations
 ------------
 
-Recommended timecourse length: 200 timepoints yields accurate recovery of both path presence and direction in simulated data; 50 timepoints is sufficient for path presence (92-100% recovery), but poor direction recovery (Gates & Molenaar, 2012).
+**Recommended timecourse length**: 200 timepoints yields accurate recovery of both path presence and direction in simulated data; 50 timepoints is sufficient for path presence (92-100% recovery), but poor direction recovery (Gates & Molenaar, 2012).
 
-Recommended sample size: Minimum 10 per subgroup (Gates & Molenaar, 2012)
+**Recommended sample size**: Minimum 10 per subgroup (Gates & Molenaar, 2012)
 
-Recommended nodes: 5-15 recommended, up to 3-20 (Beltz & Gates 2017; Lane & Gates 2017). > 20 possible, but increases computation time.
+**Recommended nodes**: 5-15 recommended, up to 3-20 (Beltz & Gates 2017; Lane & Gates 2017). > 20 possible, but increases computation time.
 
-Recommended group-connection threshold: 75% (majority threshold for neuroimaging research; van den Heuvel & Sporns 2011, c.f. Lane & Gates 2017)
+**Recommended group-connection threshold**: 75% (majority threshold for neuroimaging research; van den Heuvel & Sporns 2011, c.f. Lane & Gates 2017)
 
-Timecourses can be different lengths between participants.
+Timecourses **can** be different lengths between participants.
 
 Missing rows (i.e. discrete timepoints) are fine, up to a limit (estimation of lagged edges suffers when over 20% of the measurements are missing, Ranking & Marsh 1985, c.f. Beltz & Gates 2017). If a value is missing, the whole row must be missing (i.e. across all ROIs). 
 
@@ -114,12 +120,12 @@ Gates, K. M., Molenaar, P. C., Hillary, F. G., & Slobounov, S. (2011). Extended 
 
 Hillary, F. G., Medaglia, J. D., Gates, K. M., Molenaar, P. C., & Good, D. C. (2014). Examining network dynamics after traumatic brain injury using the extended unified SEM approach. Brain imaging and behavior, 8(3), 435-445. [10.1007/s11682-012-9205-0](https://www.doi.org/10.1007/s11682-012-9205-0)
 
-.. _start:
+.. _gimmestart:
 
-Getting Started
+gimmefMRI Usage
 ==============
 
-Install the "gimmefMRI" package in R using the following two commands:
+Install the `gimmefMRI <https://github.com/jbartolotti/gimmefMRI>`_ package in R using the following two commands:
 
 .. code-block:: console
 
