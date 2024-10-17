@@ -1,8 +1,7 @@
+GIMME introduction
+=============
 
-
-# Introduction
-
-`gimmefMRI` provides an interface for running GIMME models (Group Iterative Multiple Model Estimation) on fMRI timecourse data for functional connectivity analyses. 
+*gimmefMRI* provides an interface for running GIMME models with the *gimme* R package (Group Iterative Multiple Model Estimation) on fMRI timecourse data for functional connectivity analyses. 
 
 GIMME is a model-building approach from within a unified structural equation modeling (uSEM) framework. uSEMs are a type of model that identify lagged and contemporaneous relations between nodes. Failing to account for lagged relations in fMRI can lead to spurious contemporaneous connections (Gates et al., 2010, c.f. Beltz & Gates 2017 and c.f. Gates & Molenaar 2012)
 
@@ -10,21 +9,24 @@ Shared information is used to select directed connections for all individuals (w
 
 Compared to fixed network patterns across individuals, individual networks and edge weights better reflect heterogeneity present in many fMRI samples. Compared to individual models derived in isolation, the shared connections reliably recover brain relationships despite individual variability, and facilitate comparing edge weights across all individuals.
 
-## Model Fitting Method
+.. _modelfitting:
+
+Model Fitting Method
+-----------
 
 1. Identify all Group-level connections
 2. Identify all Subgroup-level connections (if applicable)
 3. Identify individual-level connections for each individual
 
-### Group Connections
+Group Connections
 
-Starting from null models for each individual, gimme identifies the connection that significantly improves model fit for the greatest number of individuals (Bonferroni-corrected alpha). If there is a tie, then the connection that has the highest average improvement to model fit is selected. If the selected connection significantly improves model fit for >= 75% of individuals, then that connection is added to *every* individual model.
+Starting from null models for each individual, gimme identifies the connection that significantly improves model fit for the greatest number of individuals (Bonferroni-corrected alpha). If there is a tie, then the connection that has the highest average improvement to model fit is selected. If the selected connection significantly improves model fit for >= 75% of individuals (user-defined % threshold), then that connection is added to *every* individual model.
 
 Using the new base model, gimme searches for the next connection that significantly improves model fit for the greatest number of individuals. This process repeats until no connections are identified that improve model fit for >= 75% of individuals.
 
 After identifying a group-level model, group connections are pruned. If any connection is now significant in < 75% of individuals, it is removed (if multiple group connections meet this criteria, the connection with the lowest z value is selected). Pruning continues from the new model until no group connections are identified for pruning.
 
-### Subgroup Connections
+Subgroup Connections
 
 If subgroup membership is defined *a priori*, then subgroup connections are identified within each subgroup separately, using the same procedure as group connection identification. The subgroup threshold is allowed to differ from the group threshold. 
 
@@ -32,7 +34,7 @@ After subgroup connections are identified in all subgroups, group connections ar
 
 If subgroup membership is not defined *a priori*, subgroups are identified using the community detection method Walktrap (Pons & Latapy 2006, c.f. Lane & Gates 2017), and then subgroup connections are identified as above.
 
-### Individual Connections
+Individual Connections
 
 Using the group and subgroup paths as a starting model, individual models are estimated. For each individual, the connection that most increases model fit is identified. Any previously-identified non-significant individual connections are pruned (group and subgroup connections cannot be pruned at this step). 
 
@@ -42,8 +44,10 @@ Individual connections are added iteratively until "excellent fit" is achieved. 
 3. Comparitive fit index (CFI) > .95
 4. Standardize root mean square residual (SRMR) < .05
 
+.. _data:
 
-## Data Recommendations
+Data Recommendations
+------------
 
 Recommended timecourse length: 200 timepoints yields accurate recovery of both path presence and direction in simulated data; 50 timepoints is sufficient for path presence (92-100% recovery), but poor direction recovery (Gates & Molenaar, 2012).
 
@@ -55,34 +59,41 @@ Recommended group-connection threshold: 75% (majority threshold for neuroimaging
 
 Timecourses can be different lengths between participants.
 
-Missing rows (i.e. discrete timepoints) are fine, up to a limit (estimation of lagged edges suffers when over 20% of the measurements are missing, Ranking & Marsh 1985, c.f. Beltz & Gates 2017). If a value is missing, the whole row must be missing (i.e. across ROIs). 
+Missing rows (i.e. discrete timepoints) are fine, up to a limit (estimation of lagged edges suffers when over 20% of the measurements are missing, Ranking & Marsh 1985, c.f. Beltz & Gates 2017). If a value is missing, the whole row must be missing (i.e. across all ROIs). 
 
 Mark missing timepoints as NA; do not manually omit them. Deleting them disrupts estimation of lagged effects.
 
-Missing columns (i.e., ROIs) will cause an error. If one individual is missing one ROI, you will need to drop them from the model.
+Missing columns (i.e., ROIs) in a single dataset will cause an error. If one individual is missing one ROI, you will need to drop that individual or that ROI from the model.
 
-## Interpretation Recommendations
+.. _interpretation:
 
-For Group connections, individual beta weights can be compared between groups or associated with other individual difference measures. Non-group / non-subgroup connections cannot be treated this way; unestimated individual connections cannot be replaced with zero. Specify Group connections *a priori* if you wish to analyze individual beta weights.
+Interpretation Recommendations
+---------------
 
-Presence/absence of individual connections can be compared, e.g. the number of inter-hemispheric connections in an individual.
+For Group connections, a beta weight value exists for each individual. Thus, individual beta weights can be compared between groups or associated with other individual difference measures. Non-group / non-subgroup connections cannot be treated this way; unestimated individual connections cannot be replaced with zero. Specify Group connections *a priori* if you wish to analyze individual beta weights. Specifying a connection *a priori* forces its addition to the base model.
 
-Graph theoretical metrics, e.g. identifying hubs.
+The presence or absence of individual connections can be compared, e.g. the number of inter-hemispheric connections in an individual.
 
+Graph theoretical metrics can be applied, e.g. identifying hubs.
 
-## Resources
+.. _resources:
+
+Further Resources
+-----------
 
 gimme R package: https://cran.r-project.org/web/packages/gimme/index.html
 
 gimme developer website: https://gimme.web.unc.edu/
 
-### Tutorials
+
+External Tutorials
 
 Beltz, A. M., & Gates, K. M. (2017). Network mapping with GIMME. Multivariate behavioral research, 52(6), 789-804. [10.1080/00273171.2017.1373014](https://www.doi.org/10.1080/00273171.2017.1373014)
 
 Lane, S. T., & Gates, K. M. (2017). Automated selection of robust individual-level structural equation models for time series data. Structural Equation Modeling: A Multidisciplinary Journal, 24(5), 768-782. [10.1080/10705511.2017.1309978](https://www.doi.org/10.1080/10705511.2017.1309978)
 
-### Algorithm Development
+Algorithm Development
+
 Gates, K. M., Fisher, Z. F., & Bollen, K. A. (2019). Latent variable GIMME using model implied instrumental variables (MIIVs). Psychological methods. [10.1037/met0000229](https://www.doi.org/10.1037/met0000229)
 
 Henry, T. R., Feczko, E., Cordova, M., Earl, E., Williams, S., Nigg, J. T., … & Gates, K. M. (2019). Comparing directed functional connectivity between groups with confirmatory subgrouping GIMME. Neuroimage, 188, 642-653. [10.1016/j.neuroimage.2018.12.040](https://www.doi.org/10.1016/j.neuroimage.2018.12.040)
@@ -91,56 +102,55 @@ Gates, K. M., Lane, S. T., Varangis, E., Giovanello, K., & Guiskewicz, K. (2017)
 
 Gates, K. M., & Molenaar, P. C. (2012). Group search algorithm recovers effective connectivity maps for individuals in homogeneous and heterogeneous samples. NeuroImage, 63(1), 310-319. [10.1016/j.neuroimage.2012.06.026](https://www.doi.org/10.1016/j.neuroimage.2012.06.026)
 
-### Applications
+Applications
+
 Gates, K. M., Molenaar, P. C., Hillary, F. G., & Slobounov, S. (2011). Extended unified SEM approach for modeling event-related fMRI data. NeuroImage, 54(2), 1151-1158. [10.1016/j.neuroimage.2010.08.051](https://www.doi.org/10.1016/j.neuroimage.2010.08.051)
 
 Hillary, F. G., Medaglia, J. D., Gates, K. M., Molenaar, P. C., & Good, D. C. (2014). Examining network dynamics after traumatic brain injury using the extended unified SEM approach. Brain imaging and behavior, 8(3), 435-445. [10.1007/s11682-012-9205-0](https://www.doi.org/10.1007/s11682-012-9205-0)
 
-# Getting Started
+.. _start:
 
-## Installation
+Getting Started
+==============
 
 Install the "gimmefMRI" package in R using the following two commands:
 
-`install.packages('devtools')`
+.. code-block:: console
 
-`devtools::install_github('jbartolotti/gimmefMRI')`
+    install.packages('devtools')
+    devtools::install_github('jbartolotti/gimmefMRI')
 
-Load the gimmefMRI library: `library(gimmefMRI)`
+Load the gimmefMRI library: 
+
+.. code-block:: console
+
+    library(gimmefMRI)
 
 **NOTE:** On systems that use an outdated g++ compiler (including CentOS 7 or RHEL 7), one of the dependent packages (gridtext) will fail to install. You need to install an updated compiler and direct R to use it; see https://stackoverflow.com/questions/63962253/problem-compiling-the-%c2%b4gridtext%c2%b4-package-in-r/66811910#66811910
 
-On the Synapse research server, a newer g++ version has already been installed, but you will need to configure R to use it. From the command line (not in R), run the following two commands:
-
-`mkdir ~/.R`
-
-`echo "CXX11=/opt/rh/devtoolset-9/root/usr/bin/g++ -std=c++11" >  ~/.R/Makevars`
-
-Confirm the change with the following command:
-
-`cat ~/.R/Makevars` 
-
-which should output the following to the screen: `CXX11=/opt/rh/devtoolset-9/root/usr/bin/g++ -std=c++11`. After confirming successful configuration, re-attempt the package installation.
-
-## Test Run
 
 This package comes with built-in dummy data to test your installation. Use the following command: 
 
-`gimmefMRI(mode = 'demo')` 
+.. code-block:: console
 
-This will create subfolders `models` and `scripts` in your current directory. `scripts` contains the file `run_models.R` which contains the R-code necessary used to run the two pre-configured gimme models. `models` contains two subfolders, `first_model` and `second_model`, each of which contains the input data, model output, and sample figures.
+    gimmefMRI(mode = 'demo')
 
-# Usage
+This will create subfolders ``models`` and ``scripts`` in your current directory. ``scripts`` contains the file ``run_models.R`` which contains the R-code necessary used to run the two pre-configured gimme models. ``models`` contains two subfolders, ``first_model`` and ``second_model``, each of which contains the input data, model output, and sample figures.
 
-The core of the package is a data/configuration excel file that contains all timecourse data for a project, parameters for each model to be run, and parameters for each figure to generate. Running `gimmefMRI()` prompts you to select the configuration file, at which point input data is prepared, model code is written and executed, and figure code is written and executed. 
+.. _gimmeusage:
 
-The function `getTC()` will generate a `timecourses.csv` file suitable for use as the data sheet in a gimme_config.xlsx file. Running `getTC()` will prompt you to select a `get_timecourses.csv` configuration file. This file contains rows for each subject and for each ROI. Subject rows provide paths to the preprocessed functional brain data, anatomical mask, and (optional) motion censoring timecourse, as well as where to save the single-roi timecourse files. ROI rows provide paths to each ROI mask. 
+Usage
+------------
 
-The output `timecourses.csv` file contains columns for each ROI, plus data columns including subject, time, group, condition, run, and censoring.
+The core of the package is a data/configuration excel file that contains all timecourse data for a project, parameters for each model to be run, and parameters for each figure to generate. Running ``gimmefMRI()`` prompts you to select the configuration file, at which point input data is prepared, model code is written and executed, and figure code is written and executed. 
 
-Note: AFNI functions must be installed and on the path before opening R in order to run. Alternatively, `getTC()` generates an `extract_timecourses.sh` file that can be run from the command line. This will create individual files for each combination of subject and ROI. In a later update, `getTC()` will allow you to generate the `timecourses.csv` file from these single-roi timecourse files directly.
+The function ``getTC()`` will generate a ``timecourses.csv`` file suitable for use as the data sheet in a ``gimme_config.xlsx`` file. Running ``getTC()`` will prompt you to select a ``get_timecourses.csv`` configuration file. This file contains rows for each subject and for each ROI. Subject rows provide paths to the preprocessed functional brain data, anatomical mask, and (optional) motion censoring timecourse, as well as where to save the single-roi timecourse files. ROI rows provide paths to each ROI mask. 
 
-Run the function `gimmefMRI_templates(writedir = TARGET_DIRECTORY)` to generate sample configuration files `DemoGIMME.xlsx` and `get_timecourses.csv` in the specified target directory. Default is to save the sample files to the current directory. 
+The output ``timecourses.csv`` file contains columns for each ROI, plus data columns including subject, time, group, condition, run, and censoring.
+
+Note: AFNI functions must be installed and on the path before opening R in order to run. Alternatively, ``getTC()`` generates an ``extract_timecourses.sh`` file that can be run from the command line. This will create individual files for each combination of subject and ROI. In a later update, ``getTC()`` will allow you to generate the ``timecourses.csv`` file from these single-roi timecourse files directly.
+
+Run the function ``gimmefMRI_templates(writedir = TARGET_DIRECTORY)`` to generate sample configuration files ``DemoGIMME.xlsx`` and ``get_timecourses.csv`` in the specified target directory. Default is to save the sample files to the current directory. 
 
 
 # Configuration
